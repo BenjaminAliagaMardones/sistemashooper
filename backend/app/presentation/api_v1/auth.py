@@ -9,8 +9,50 @@ from app.application.schemas.token import Token
 from app.core import security
 from app.core.config import settings
 from datetime import timedelta
+from pydantic import BaseModel, EmailStr
+from app.infrastructure.database.orm_models.business import BusinessConfigORM
 
 router = APIRouter()
+
+class SetupAdminRequest(BaseModel):
+    email: EmailStr
+    password: str
+    business_name: str
+
+@router.post("/setup-admin", status_code=status.HTTP_201_CREATED)
+def setup_first_admin(data: SetupAdminRequest, db: Session = Depends(get_db)):
+    """
+    Creates the first admin user securely.
+    This endpoint ONLY works if there are NO users in the database.
+    """
+    if db.query(UserORM).first() is not None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Setup already completed. At least one user exists."
+        )
+
+    # 1. Create the user
+    new_user = UserORM(
+        email=data.email,
+        hashed_password=security.get_password_hash(data.password),
+        is_active=True
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    # 2. Create default business config
+    new_config = BusinessConfigORM(
+        user_id=new_user.id,
+        business_name=data.business_name,
+        base_currency="USD",
+        contact_email=data.email
+    )
+    db.add(new_config)
+    db.commit()
+
+    return {"message": f"Admin user {data.email} created successfully!"}
+
 
 @router.post("/login/access-token", response_model=Token)
 def login_access_token(

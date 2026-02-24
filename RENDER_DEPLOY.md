@@ -45,5 +45,25 @@ El backend utiliza Docker para instalar dependencias complejas del sistema reque
    - Esto evita errores 404 al recargar páginas directamente (ej. `/orders`).
 6. Haz clic en **Create Static Site**.
 
+## 4. Crear el Primer Usuario Administrador (Shoper)
+Al ser un sistema cerrado (SaaS), no hay página pública de registro. Para crear tu administrador incial **y de manera gratuita** sin usar la Shell de Render:
+
+1. Ingresa a la URL de tu backend añadiendo `/docs` al final (Ej: `https://shopper-backend...onrender.com/docs`). 
+2. Esta es la documentación interactiva de la API (Swagger UI).
+3. Busca el cuadro verde que dice **POST `/api/v1/auth/setup-admin`** y ábrelo.
+4. Haz clic en el botón blanco **"Try it out"** (arriba a la derecha del recuadro).
+5. En el cuadro de texto (`Request body`), llena tus datos. Debe verse así:
+```json
+{
+  "email": "admin@tu-dominio.com",
+  "password": "UnaPasswordSegura123",
+  "business_name": "Mi Super Shopper"
+}
+```
+6. Haz clic en el botón azul grande **"Execute"**. 
+7. Si el recuadro negro de abajo responde con código `201`, ¡Felicidades! Se ha creado tu usuario.
+*(Nota de Seguridad: Este endpoint **se autobloquea** y lanza error 403 permanentemente después de crear el primer usuario, por lo que nadie más podrá registrar cuentas desde aquí).*
+
 ## ¡Listo! 🎉
+Abre tu URL del Frontend y usa ese email y contraseña para entrar. 
 Tu SaaS estará corriendo y conectándose de forma segura. El backend maneja su propia base de datos, y el frontend es servido a gran velocidad por el CDN global estático de Render.
