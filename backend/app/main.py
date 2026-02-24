@@ -8,6 +8,11 @@ app = FastAPI(
 )
 
 from app.presentation.api_v1.api import api_router
+from app.infrastructure.database.session import engine
+from app.infrastructure.database.orm_models import Base
+
+# Create all database tables (useful for initial deploy if Alembic isn't configured)
+Base.metadata.create_all(bind=engine)
 
 # CORS config
 app.add_middleware(
