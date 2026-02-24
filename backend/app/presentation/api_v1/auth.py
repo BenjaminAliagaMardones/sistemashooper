@@ -10,7 +10,7 @@ from app.core import security
 from app.core.config import settings
 from datetime import timedelta
 from pydantic import BaseModel, EmailStr
-from app.infrastructure.database.orm_models.business import BusinessConfigORM
+from app.infrastructure.database.orm_models.business_config import BusinessConfigORM
 
 router = APIRouter()
 

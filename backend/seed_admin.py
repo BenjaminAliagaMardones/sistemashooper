@@ -8,7 +8,7 @@ import uuid
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.infrastructure.database.orm_models.user import UserORM
-from app.infrastructure.database.orm_models.business import BusinessConfigORM
+from app.infrastructure.database.orm_models.business_config import BusinessConfigORM
 from app.core.security import get_password_hash
 from app.core.config import settings
 
