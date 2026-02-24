@@ -1,0 +1,87 @@
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-card h3 {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.metric-val {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.primary {
+    color: var(--color-primary);
+}
+
+.success {
+    color: var(--color-success);
+}
+
+.warning {
+    color: var(--color-warning);
+}
+
+.text-main {
+    color: var(--color-text-main);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.dashboard-sections {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.rank-badge {
+    display: inline-block;
+    background-color: var(--color-warning);
+    color: white;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    line-height: 24px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.bg-primary {
+    background-color: var(--color-primary) !important;
+}
+
+.text-white,
+.text-white h2,
+.text-white p {
+    color: white !important;
+}
+
+.d-flex-col-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

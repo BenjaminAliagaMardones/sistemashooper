@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice #{{ order.id }}</title>
+    <style>
+        body { font-family: 'Helvetica', 'Arial', sans-serif; padding: 20px; color: #333; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { max-width: 150px; max-height: 80px; }
+        .business-info { text-align: right; }
+        .title { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .details-grid { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .client-info span { display: block; margin-bottom: 5px; }
+        .order-info span { display: block; margin-bottom: 5px; text-align: right; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th { background-color: #f8f9fa; color: #333; padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        .totals-container { width: 100%; text-align: right; margin-top: 20px; }
+        .totals-row { display: flex; justify-content: flex-end; margin-bottom: 10px; font-size: 14px; }
+        .totals-label { width: 150px; font-weight: bold; color: #555; }
+        .totals-value { width: 120px; }
+        .grand-total { font-size: 18px; font-weight: bold; color: #2c3e50; border-top: 2px solid #eee; padding-top: 10px; margin-top: 10px; }
+        .footer { margin-top: 50px; text-align: center; color: #7f8c8d; font-size: 12px; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            {% if business.logo_url %}
+            <img src="{{ business.logo_url }}" class="logo" alt="Business Logo">
+            {% else %}
+            <div class="title">{{ business.business_name }}</div>
+            {% endif %}
+        </div>
+        <div class="business-info">
+            <h2>INVOICE</h2>
+            <p>{{ business.contact_email or '' }}</p>
+        </div>
+    </div>
+
+    <div class="details-grid">
+        <div class="client-info">
+            <strong>Billed To:</strong>
+            <span>{{ client.name }} {{ client.last_name }}</span>
+            <span>{{ client.email or '' }}</span>
+            <span>{{ client.address or '' }}</span>
+        </div>
+        <div class="order-info">
+            <strong>Order Details:</strong>
+            <span>Date: {{ order.date }}</span>
+            <span>Status: {{ order.status }}</span>
+            <span>Payment Method: {{ order.payment_method or 'N/A' }}</span>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Base Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.base_price }}</td>
+                <td>${{ item.final_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals-container">
+        <div class="totals-row">
+            <div class="totals-label">Subtotal Taxes:</div>
+            <div class="totals-value">${{ order.total_tax }}</div>
+        </div>
+        <div class="totals-row">
+            <div class="totals-label">Subtotal Fees:</div>
+            <div class="totals-value">${{ order.total_commission }}</div>
+        </div>
+        <div class="totals-row grand-total">
+            <div class="totals-label">Total Amount:</div>
+            <div class="totals-value">${{ order.total_amount }} {{ business.base_currency }}</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+        {% if order.notes %}
+        <p><strong>Notes:</strong> {{ order.notes }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
